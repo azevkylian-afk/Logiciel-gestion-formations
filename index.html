@@ -760,8 +760,8 @@
                         <input type="text" id="prenom" required>
                     </div>
                     <div class="form-group">
-                        <label>Matricule *</label>
-                        <input type="text" id="matricule" required>
+                        <label>Service *</label>
+                        <input type="text" id="service" required>
                     </div>
                     <div class="form-group">
                         <label>
@@ -893,23 +893,28 @@
             
             const nom = document.getElementById('nom').value;
             const prenom = document.getElementById('prenom').value;
-            const matricule = document.getElementById('matricule').value;
+            const service = document.getElementById('service').value;
             const signature = document.getElementById('signaturePad').toDataURL();
             
             const attestations = DB.getAttestations();
-            attestations.push({
+            const attestationData = {
                 id: 'a' + Date.now(),
                 formation_id: f.id,
                 formation_titre: f.titre,
                 nom,
                 prenom,
-                matricule,
+                service,
                 reponses,
                 score: scorePercent,
                 signature,
                 date: new Date().toISOString()
-            });
+            };
+            
+            attestations.push(attestationData);
             DB.saveAttestations(attestations);
+            
+            // Envoyer vers Google Sheets
+            sendToGoogleSheets(attestationData);
             
             showScore(scorePercent, score, f.questions.length);
         }
@@ -1011,7 +1016,7 @@
                 <h3>📝 Détails de l'attestation</h3>
                 <p><strong>Formation:</strong> ${attestation.formation_titre}</p>
                 <p><strong>Salarié:</strong> ${attestation.prenom} ${attestation.nom}</p>
-                <p><strong>Matricule:</strong> ${attestation.matricule}</p>
+                <p><strong>Service:</strong> ${attestation.service}</p>
                 <p><strong>Date:</strong> ${new Date(attestation.date).toLocaleString('fr-FR')}</p>
                 <p><strong>Score:</strong> <span class="badge badge-${attestation.score >= 70 ? 'success' : (attestation.score >= 50 ? 'warning' : 'danger')}">${attestation.score}%</span></p>
                 <hr>
@@ -1051,10 +1056,10 @@
                 return;
             }
             
-            let csv = 'Date;Nom;Prénom;Matricule;Formation;Score\n';
+            let csv = 'Date;Nom;Prénom;Service;Formation;Score\n';
             attestations.forEach(a => {
                 const date = new Date(a.date).toLocaleDateString('fr-FR');
-                csv += `${date};${a.nom};${a.prenom};${a.matricule};${a.formation_titre};${a.score}%\n`;
+                csv += `${date};${a.nom};${a.prenom};${a.service};${a.formation_titre};${a.score}%\n`;
             });
             
             const blob = new Blob([csv], { type: 'text/csv' });
@@ -1065,8 +1070,37 @@
             a.click();
         }
 
+        // Fonction pour envoyer vers Google Sheets
+        async function sendToGoogleSheets(data) {
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIhMvUOA3gqPXaOpgyuZO3dsTsIJcEyB_uyatq6Da6UOUcwp7voF8P14qA9_f98BTP/exec';
+            
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        date: new Date(data.date).toLocaleString('fr-FR'),
+                        nom: data.nom,
+                        prenom: data.prenom,
+                        service: data.service,
+                        formation_titre: data.formation_titre,
+                        score: data.score,
+                        signature: data.signature.substring(0, 100) + '...' // Signature tronquée pour Google Sheets
+                    })
+                });
+                console.log('✅ Attestation envoyée vers Google Sheets');
+            } catch (error) {
+                console.error('❌ Erreur envoi Google Sheets:', error);
+                // L'attestation reste sauvegardée localement même si l'envoi échoue
+            }
+        }
+
         window.onload = () => {
             console.log('✅ Site de formation QSE chargé - Formation "Risque Routier" pré-chargée');
+            console.log('📊 Connexion Google Sheets activée');
         };
     </script>
 </body>

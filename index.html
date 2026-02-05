@@ -1072,35 +1072,45 @@
 
         // Fonction pour envoyer vers Google Sheets
         async function sendToGoogleSheets(data) {
-            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIhMvUOA3gqPXaOpgyuZO3dsTsIJcEyB_uyatq6Da6UOUcwp7voF8P14qA9_f98BTP/exec';
+            const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScS4Zr7hK60v_hmafoM5IsmdafLjLpLP9ZnHnw3mKIXA-D8lw/formResponse';
+            
+            console.log('📤 Envoi vers Google Forms...', {
+                nom: data.nom,
+                prenom: data.prenom,
+                service: data.service,
+                formation: data.formation_titre
+            });
             
             try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                // Préparer les données pour Google Forms
+                const formData = new FormData();
+                formData.append('entry.1559659408', new Date(data.date).toLocaleString('fr-FR')); // Date
+                formData.append('entry.2023905989', data.nom); // Nom
+                formData.append('entry.1739775300', data.prenom); // Prénom
+                formData.append('entry.872954626', data.service); // Service
+                formData.append('entry.43617181', data.formation_titre); // Formation
+                formData.append('entry.1964237307', data.score + '%'); // Score
+                formData.append('entry.524491848', data.signature.substring(0, 200)); // Signature (tronquée)
+                
+                // Envoi vers Google Forms (mode no-cors car Google Forms ne renvoie pas de CORS)
+                await fetch(GOOGLE_FORM_URL, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        date: new Date(data.date).toLocaleString('fr-FR'),
-                        nom: data.nom,
-                        prenom: data.prenom,
-                        service: data.service,
-                        formation_titre: data.formation_titre,
-                        score: data.score,
-                        signature: data.signature.substring(0, 100) + '...' // Signature tronquée pour Google Sheets
-                    })
+                    body: formData
                 });
-                console.log('✅ Attestation envoyée vers Google Sheets');
+                
+                console.log('✅ Attestation envoyée vers Google Forms !');
+                console.log('✅ Vérifiez votre Google Sheet - la ligne devrait apparaître !');
+                
             } catch (error) {
-                console.error('❌ Erreur envoi Google Sheets:', error);
-                // L'attestation reste sauvegardée localement même si l'envoi échoue
+                console.error('❌ Erreur envoi Google Forms:', error);
+                console.log('ℹ️ L\'attestation reste sauvegardée localement');
             }
         }
 
         window.onload = () => {
             console.log('✅ Site de formation QSE chargé - Formation "Risque Routier" pré-chargée');
-            console.log('📊 Connexion Google Sheets activée');
+            console.log('📊 Connexion Google Forms activée');
         };
     </script>
 </body>

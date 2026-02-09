@@ -513,5 +513,53 @@
             console.log('🎯 Chaque attestation sera automatiquement centralisée !');
         };
     </script>
+    <script>
+/** Transforme un <form> en objet {name: value} */
+function formToJSON(form) {
+  const fd = new FormData(form);
+  return Object.fromEntries(fd.entries());
+}
+
+/**
+ * Branche tous les <form data-to-sheet="1"> de la page
+ * Exemple :
+ * <form id="contact" data-to-sheet="1">
+ *   <input name="nom" required>
+ *   <input type="email" name="email" required>
+ *   <textarea name="message" required></textarea>
+ *   <button type="submit">Envoyer</button>
+ * </form>
+ */
+document.addEventListener('DOMContentLoaded', () => {
+  const WEBHOOK = 'https://script.google.com/macros/s/AKfycbwTdpoGg93wShXfBZXF6V7VrvjzZNdXrMsEAIJWUYJ7AfYF1EGFke76EtVJoP4xg1s/exec';
+
+  document.querySelectorAll('form[data-to-sheet="1"]').forEach(form => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const payload = formToJSON(form);
+      // Optionnel : identifier la page/formulaire d’origine
+      payload.source = payload.source || (form.id || location.pathname);
+
+      try {
+        const res = await fetch(WEBHOOK, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload),
+          redirect: 'follow'
+        });
+
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        alert('✅ Merci, votre formulaire a bien été envoyé.');
+        form.reset();
+      } catch (err) {
+        console.error('Submit error:', err);
+        alert("❌ Une erreur s'est produite, réessayez plus tard.");
+      }
+    });
+  });
+});
+</script>
+
 </body>
 </html>

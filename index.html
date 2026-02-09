@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formation QSE - Plateforme de Formation Obligatoire</title>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg: #f8fafc;
+            --text: #1e293b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .logo-block {
+            background: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: var(--text);
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 1.1em;
+        }
+
+        /* Navigation */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .nav-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        .nav-card.primary { border-top: 4px solid var(--primary); }
+        .nav-card.success { border-top: 4px solid var(--success); }
+
+        .nav-card h2 {
+            color: var(--text);
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .nav-card p {
+            color: #64748b;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #64748b;
+            color: white;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.9em;
+        }
+
+        .back-btn {
+            margin-bottom: 20px;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .formation-card {
+            background: linear-gradient(135deg, var(--primary), #1d4ed8);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .formation-card h3 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .formation-card .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        /* Quiz */
+        .question-block {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .question-block h4 {
+            color: var(--text);
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .option {
+            background: white;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: #f1f5f9;
+        }
+
+        .option input[type="radio"],
+        .option input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Signature */
+        .signature-container {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        #signatureCanvas {
+            display: block;
+            width: 100%;
+            height: 200px;
+            cursor: crosshair;
+            touch-action: none;
+            background: white;
+        }
+
+        .signature-controls {
+            background: #f8fafc;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            text-align: center;
+        }
+
+        .score-details {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        /* Admin */
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            flex-wrap: wrap;
+        }
+
+        .admin-tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #64748b;
+            transition: all 0.3s ease;
+        }
+
+        .admin-tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+            margin-bottom: -2px;
+        }
+
+        .admin-content {
+            display: none;
+        }
+
+        .admin-content.active {
+            display: block;
+        }
+
+        /* Table */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .table tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Formation Item */
+        .formation-item {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .formation-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .formation-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Attestation Item */
+        .attestation-item {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .attestation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .attestation-signature {
+            max-width: 200px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        /* Alert */
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid var(--success);
+        }
+
+        .alert-danger {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid var(--danger);
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            color: #92400e;
+            border-left: 4px solid var(--warning);
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary), #1d4ed8);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            opacity: 0.9;
+        }
+
+        /* Question Editor */
+        .question-editor {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .option-editor {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .option-editor input[type="text"] {
+            flex: 1;
+        }
+
+        .option-editor input[type="checkbox"] {
+            width: auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .nav-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            header {
+                padding: 20px;
+            }
+
+            .admin-tabs {
+                overflow-x: auto;
+            }
+
+            .formation-item-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .formation-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo-block">📚 QSE FORMATION</div>
+            <h1>Plateforme de Formation Obligatoire</h1>
+            <p class="subtitle">Formation Qualité, Sécurité et Environnement</p>
+        </header>
+
+        <!-- Navigation principale -->
+        <div id="homeSection" class="section active">
+            <div class="nav-grid">
+                <div class="nav-card primary" onclick="showSection('salarie')">
+                    <h2>👨‍💼 Espace Salarié</h2>
+                    <p>Accédez à votre formation du mois</p>
+                </div>
+                <div class="nav-card success" onclick="showSection('admin')">
+                    <h2>⚙️ Administration</h2>
+                    <p>Gérer les formations et attestations</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Espace Salarié -->
+        <div id="salarieSection" class="section">
+            <button class="btn btn-secondary back-btn" onclick="showSection('home')">← Retour</button>
+            
+            <div id="formationsList"></div>
+        </div>
+
+        <!-- Quiz Section -->
+        <div id="quizSection" class="section">
+            <button class="btn btn-secondary back-btn" onclick="showSection('salarie')">← Retour</button>
+            
+            <div class="formation-card">
+                <h3 id="quizTitle">Formation</h3>
+                <div class="badge" id="quizMonth">Mois</div>
+            </div>
+
+            <div id="questionsContainer"></div>
+
+            <div class="form-group">
+                <label for="nom">Nom *</label>
+                <input type="text" id="nom" required>
+            </div>
+
+            <div class="form-group">
+                <label for="prenom">Prénom *</label>
+                <input type="text" id="prenom" required>
+            </div>
+
+            <div class="form-group">
+                <label for="service">Service *</label>
+                <input type="text" id="service" required>
+            </div>
+
+            <div class="form-group">
+                <label>Signature * (signez avec votre doigt ou souris)</label>
+                <div class="signature-container">
+                    <canvas id="signatureCanvas"></canvas>
+                    <div class="signature-controls">
+                        <span style="color: #64748b;">Signez dans la zone ci-dessus</span>
+                        <button class="btn btn-secondary btn-small" onclick="clearSignature()">Effacer</button>
+                    </div>
+                </div>
+                <div id="signatureError" class="alert alert-danger" style="display: none;">
+                    ⚠️ Veuillez signer avant de valider
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="submitQuiz()" style="width: 100%; padding: 15px; font-size: 1.1em;">
+                ✅ Valider l'attestation
+            </button>
+        </div>
+
+        <!-- Administration Section -->
+        <div id="adminSection" class="section">
+            <button class="btn btn-secondary back-btn" onclick="showSection('home')">← Retour</button>
+            
+            <h2>Administration</h2>
+
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="showAdminTab(event, 'create')">➕ Créer Formation</button>
+                <button class="admin-tab" onclick="showAdminTab(event, 'list')">📋 Gérer Formations</button>
+                <button class="admin-tab" onclick="showAdminTab(event, 'attestations')">📄 Attestations</button>
+            </div>
+
+            <!-- Create Formation -->
+            <div id="createTab" class="admin-content active">
+                <div class="card">
+                    <h3>Créer une nouvelle formation</h3>
+                    
+                    <div class="form-group">
+                        <label for="newFormationTitre">Titre de la formation *</label>
+                        <input type="text" id="newFormationTitre" placeholder="Ex: Risque Routier">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newFormationMois">Mois (AAAA-MM) *</label>
+                        <input type="text" id="newFormationMois" placeholder="Ex: 2026-02">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newFormationPdf">Lien PDF (optionnel)</label>
+                        <input type="text" id="newFormationPdf" placeholder="Ex: https://drive.google.com/file/d/...">
+                    </div>
+
+                    <hr style="margin: 30px 0; border: none; border-top: 2px solid #e2e8f0;">
+
+                    <h4 style="margin-bottom: 20px;">Questions</h4>
+                    <div id="questionsEditor"></div>
+
+                    <button class="btn btn-secondary" onclick="addQuestion()" style="margin-bottom: 20px;">
+                        ➕ Ajouter une question
+                    </button>
+
+                    <button class="btn btn-primary" onclick="saveFormation()" style="width: 100%; padding: 15px; font-size: 1.1em;">
+                        💾 Enregistrer la formation
+                    </button>
+                </div>
+            </div>
+
+            <!-- List Formations -->
+            <div id="listTab" class="admin-content">
+                <div class="card">
+                    <h3>Gérer les formations</h3>
+                    <div id="adminFormationsList"></div>
+                </div>
+            </div>
+
+            <!-- Attestations -->
+            <div id="attestationsTab" class="admin-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalAttestations">0</div>
+                        <div class="stat-label">Attestations</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-success" onclick="exportToExcel()" style="margin-bottom: 20px;">
+                    📥 Exporter vers Excel
+                </button>
+
+                <div class="card">
+                    <h3>Liste des attestations</h3>
+                    <div id="attestationsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Score -->
+    <div id="scoreModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modalIcon">🎉</div>
+            <h3 id="modalTitle">Résultat</h3>
+            <div class="score-details">
+                <p style="font-size: 2em; font-weight: bold; margin-bottom: 10px;" id="modalScore">0%</p>
+                <p id="modalMessage">Message</p>
+            </div>
+            <button class="btn btn-primary" onclick="closeScoreModal()">Fermer</button>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // DONNÉES INITIALES
+        // ============================================
+        const INITIAL_DATA = {
+            formations: [
+                {
+                    id: 'f1770217691908',
+                    titre: 'Risque Routier',
+                    mois: '2026-01',
+                    is_current: true,
+                    pdf_url: 'https://drive.google.com/file/d/1ctZn0PsKmROGEwV_1-od3-oLzVZa8Nlk/view?usp=sharing',
+                    questions: [
+                        {
+                            id: 1,
+                            question: "0,20g à 0,25g d'alcool dans le sang correspond à :",
+                            type: "radio",
+                            options: ["1 bière", "1 verre de vin", "1 bière et un verre de vin blanc"],
+                            correct_answers: [1]
+                        },
+                        {
+                            id: 2,
+                            question: "La première cause d'accidents de la route est :",
+                            type: "radio",
+                            options: ["L'alcool", "La drogue", "La vitesse excessive"],
+                            correct_answers: [2]
+                        },
+                        {
+                            id: 3,
+                            question: "Je conduis fatigué et ressens l'envie de dormir. Je...",
+                            type: "checkbox",
+                            options: [
+                                "Consulte un médecin",
+                                "Met le volume à fond et ouvre les fenêtres pour me réveiller",
+                                "Passe le volant à un collègue ayant le permis",
+                                "Si je suis seul, je fais une pause et préviens mon responsable d'un léger retard"
+                            ],
+                            correct_answers: [2, 3]
+                        },
+                        {
+                            id: 4,
+                            question: "Je n'ai plus de permis, puis-je conduire les véhicules SNEF ?",
+                            type: "radio",
+                            options: [
+                                "Oui d'après l'article R4526-3 du code du travail les véhicules de société ne sont pas concernés",
+                                "Non c'est formellement interdit",
+                                "Oui avec une autorisation de l'employeur"
+                            ],
+                            correct_answers: [1]
+                        },
+                        {
+                            id: 5,
+                            question: "Envoyer un SMS pendant 3 secondes, en conduisant n'augmente pas le risque d'accident",
+                            type: "radio",
+                            options: ["Vrai", "Faux"],
+                            correct_answers: [1]
+                        },
+                        {
+                            id: 6,
+                            question: "Mon collègue conduit et ne cesse de répondre au téléphone",
+                            type: "radio",
+                            options: [
+                                "Ce n'est pas mon problème",
+                                "Ce n'est pas dangereux, je l'averti des dangers",
+                                "Je prends le volant"
+                            ],
+                            correct_answers: [2]
+                        },
+                        {
+                            id: 7,
+                            question: "Je dois me rendre sur un chantier mais je suis en retard",
+                            type: "radio",
+                            options: [
+                                "Je vais sur le chantier le plus rapidement possible",
+                                "Je préviens mon chargé d'affaire de mon retard et roule prudemment",
+                                "Je prends des petites routes pour éviter les contrôles de police"
+                            ],
+                            correct_answers: [1]
+                        },
+                        {
+                            id: 8,
+                            question: "Les accidents de la route représentent ....% des accidents mortels liés au travail.",
+                            type: "radio",
+                            options: ["15%", "30%", "33%"],
+                            correct_answers: [2]
+                        },
+                        {
+                            id: 9,
+                            question: "Ma vidange est à faire sous peu",
+                            type: "radio",
+                            options: [
+                                "Pas mon souci, c'est un véhicule SNEF ce n'est pas à moi de gérer ça",
+                                "Je programme l'intervention dans un centre agréé",
+                                "Je la fais moi-même à la maison"
+                            ],
+                            correct_answers: [1]
+                        },
+                        {
+                            id: 10,
+                            question: "Je suis responsable de mon véhicule et de son bon entretien",
+                            type: "radio",
+                            options: ["Vrai", "Faux"],
+                            correct_answers: [0]
+                        }
+                    ]
+                }
+            ],
+            attestations: []
+        };
+
+        // ============================================
+        // BASE DE DONNÉES LOCALE
+        // ============================================
+        const DB = {
+            init: function() {
+                if (!localStorage.getItem('formations')) {
+                    localStorage.setItem('formations', JSON.stringify(INITIAL_DATA.formations));
+                }
+                if (!localStorage.getItem('attestations')) {
+                    localStorage.setItem('attestations', JSON.stringify(INITIAL_DATA.attestations));
+                }
+            },
+            getFormations: function() {
+                return JSON.parse(localStorage.getItem('formations') || '[]');
+            },
+            saveFormations: function(data) {
+                localStorage.setItem('formations', JSON.stringify(data));
+            },
+            getAttestations: function() {
+                return JSON.parse(localStorage.getItem('attestations') || '[]');
+            },
+            saveAttestations: function(data) {
+                localStorage.setItem('attestations', JSON.stringify(data));
+            }
+        };
+
+        // ============================================
+        // VARIABLES GLOBALES
+        // ============================================
+        let currentFormation = null;
+        let signaturePad = null;
+        let editorQuestions = [];
+
+        // ============================================
+        // NAVIGATION
+        // ============================================
+        function showSection(section) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            
+            switch(section) {
+                case 'home':
+                    document.getElementById('homeSection').classList.add('active');
+                    break;
+                case 'salarie':
+                    document.getElementById('salarieSection').classList.add('active');
+                    loadFormations();
+                    break;
+                case 'admin':
+                    document.getElementById('adminSection').classList.add('active');
+                    showAdminTab(null, 'create');
+                    break;
+                case 'quiz':
+                    document.getElementById('quizSection').classList.add('active');
+                    break;
+            }
+        }
+
+        function showAdminTab(event, tab) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.admin-content').forEach(c => c.classList.remove('active'));
+            
+            if (event) {
+                event.target.classList.add('active');
+            } else {
+                document.querySelector(`.admin-tab`).classList.add('active');
+            }
+            
+            switch(tab) {
+                case 'create':
+                    document.getElementById('createTab').classList.add('active');
+                    renderQuestionEditor();
+                    break;
+                case 'list':
+                    document.getElementById('listTab').classList.add('active');
+                    loadAdminFormations();
+                    break;
+                case 'attestations':
+                    document.getElementById('attestationsTab').classList.add('active');
+                    loadAttestations();
+                    break;
+            }
+        }
+
+        // ============================================
+        // FORMATIONS (ESPACE SALARIÉ)
+        // ============================================
+        function loadFormations() {
+            const formations = DB.getFormations();
+            const container = document.getElementById('formationsList');
+            
+            const activeFormations = formations.filter(f => f.is_current);
+            
+            if (activeFormations.length === 0) {
+                container.innerHTML = '<div class="alert alert-warning">Aucune formation disponible pour le moment.</div>';
+                return;
+            }
+            
+            let html = '';
+            activeFormations.forEach(formation => {
+                html += `
+                    <div class="formation-card">
+                        <h3>📚 ${formation.titre}</h3>
+                        <div class="badge">Formation du mois - ${formation.mois}</div>
+                        <p style="margin-top: 15px; opacity: 0.9;">
+                            ${formation.questions.length} questions à compléter
+                        </p>
+                        ${formation.pdf_url ? `
+                            <a href="${formation.pdf_url}" target="_blank" class="btn btn-secondary" style="margin-top: 15px; display: inline-block;">
+                                📄 Voir le support de formation
+                            </a>
+                        ` : ''}
+                    </div>
+                    <button class="btn btn-primary" onclick="startQuiz('${formation.id}')" style="width: 100%; padding: 15px; font-size: 1.1em; margin-bottom: 20px;">
+                        ▶️ Démarrer la formation
+                    </button>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // ============================================
+        // QUIZ
+        // ============================================
+        function startQuiz(formationId) {
+            const formations = DB.getFormations();
+            currentFormation = formations.find(f => f.id === formationId);
+            
+            if (!currentFormation) {
+                alert('Formation introuvable');
+                return;
+            }
+            
+            document.getElementById('quizTitle').textContent = currentFormation.titre;
+            document.getElementById('quizMonth').textContent = `Formation du mois - ${currentFormation.mois}`;
+            
+            renderQuestions();
+            setupSignatureCanvas();
+            showSection('quiz');
+            
+            // Réinitialiser le formulaire
+            document.getElementById('nom').value = '';
+            document.getElementById('prenom').value = '';
+            document.getElementById('service').value = '';
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            
+            let html = '';
+            
+            currentFormation.questions.forEach((q, index) => {
+                html += `
+                    <div class="question-block" data-question="${q.id}">
+                        <h4>Question ${index + 1} : ${q.question}</h4>
+                `;
+                
+                q.options.forEach((option, optIndex) => {
+                    const inputType = q.type === 'checkbox' ? 'checkbox' : 'radio';
+                    const inputName = q.type === 'checkbox' ? `q${q.id}_${optIndex}` : `q${q.id}`;
+                    
+                    html += `
+                        <div class="option">
+                            <label>
+                                <input type="${inputType}" name="${inputName}" value="${optIndex}">
+                                ${option}
+                            </label>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // ============================================
+        // SIGNATURE
+        // ============================================
+        function setupSignatureCanvas() {
+            const canvas = document.getElementById('signatureCanvas');
+            if (!canvas) return;
+            
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 200;
+            
+            signaturePad = new SignaturePad(canvas, {
+                backgroundColor: 'rgb(255, 255, 255)',
+                penColor: 'rgb(0, 0, 0)',
+                minWidth: 1,
+                maxWidth: 3
+            });
+        }
+
+        function clearSignature() {
+            if (signaturePad) {
+                signaturePad.clear();
+            }
+            document.getElementById('signatureError').style.display = 'none';
+        }
+
+        function isCanvasEmpty() {
+            if (!signaturePad) {
+                return true;
+            }
+            return signaturePad.isEmpty();
+        }
+
+        // ============================================
+        // VALIDATION QUIZ
+        // ============================================
+        function submitQuiz() {
+            if (isCanvasEmpty()) {
+                document.getElementById('signatureError').style.display = 'block';
+                document.getElementById('signatureCanvas').scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+            document.getElementById('signatureError').style.display = 'none';
+            
+            const answers = {};
+            let allAnswered = true;
+            
+            currentFormation.questions.forEach(q => {
+                if (q.type === 'radio') {
+                    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                    if (!selected) {
+                        allAnswered = false;
+                        return;
+                    }
+                    answers[q.id] = [parseInt(selected.value)];
+                } else {
+                    const selected = Array.from(document.querySelectorAll(`input[name^="q${q.id}_"]:checked`))
+                        .map(input => parseInt(input.value));
+                    if (selected.length === 0) {
+                        allAnswered = false;
+                        return;
+                    }
+                    answers[q.id] = selected;
+                }
+            });
+            
+            if (!allAnswered) {
+                alert('⚠️ Veuillez répondre à toutes les questions avant de valider.');
+                return;
+            }
+            
+            let correctCount = 0;
+            currentFormation.questions.forEach(q => {
+                const userAnswers = answers[q.id].sort();
+                const correctAnswers = q.correct_answers.sort();
+                
+                if (JSON.stringify(userAnswers) === JSON.stringify(correctAnswers)) {
+                    correctCount++;
+                }
+            });
+            
+            const score = Math.round((correctCount / currentFormation.questions.length) * 100);
+            
+            const nom = document.getElementById('nom').value.trim();
+            const prenom = document.getElementById('prenom').value.trim();
+            const service = document.getElementById('service').value.trim();
+            
+            if (!nom || !prenom || !service) {
+                alert('⚠️ Veuillez remplir tous les champs obligatoires.');
+                return;
+            }
+            
+            const signatureData = signaturePad.toDataURL();
+            
+            const attestation = {
+                id: 'a' + Date.now(),
+                formation_id: currentFormation.id,
+                formation_titre: currentFormation.titre,
+                formation_mois: currentFormation.mois,
+                nom: nom,
+                prenom: prenom,
+                service: service,
+                answers: answers,
+                score: score,
+                signature: signatureData,
+                date: new Date().toLocaleString('fr-FR')
+            };
+            
+            const attestations = DB.getAttestations();
+            attestations.push(attestation);
+            DB.saveAttestations(attestations);
+            
+            sendToFormspree(attestation);
+            
+            showScoreModal(score, attestation);
+        }
+
+        function showScoreModal(score, attestation) {
+            const modal = document.getElementById('scoreModal');
+            const icon = document.getElementById('modalIcon');
+            const title = document.getElementById('modalTitle');
+            const scoreEl = document.getElementById('modalScore');
+            const message = document.getElementById('modalMessage');
+            
+            scoreEl.textContent = score + '%';
+            
+            if (score >= 70) {
+                icon.textContent = '🎉';
+                icon.style.color = 'var(--success)';
+                title.textContent = 'Félicitations !';
+                title.style.color = 'var(--success)';
+                message.textContent = 'Vous avez réussi la formation. Votre attestation a été enregistrée et envoyée.';
+            } else if (score >= 50) {
+                icon.textContent = '⚠️';
+                icon.style.color = 'var(--warning)';
+                title.textContent = 'Peut mieux faire';
+                title.style.color = 'var(--warning)';
+                message.textContent = 'Nous vous recommandons de revoir la formation.';
+            } else {
+                icon.textContent = '❌';
+                icon.style.color = 'var(--danger)';
+                title.textContent = 'Non validé';
+                title.style.color = 'var(--danger)';
+                message.textContent = 'Veuillez reprendre la formation et réessayer.';
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeScoreModal() {
+            document.getElementById('scoreModal').classList.remove('active');
+            showSection('home');
+        }
+
+        // ============================================
+        // FORMSPREE
+        // ============================================
+        async function sendToFormspree(attestation) {
+            console.log('📤 Envoi vers Formspree...', attestation);
+
+            try {
+                const formData = new FormData();
+                formData.append('date', attestation.date);
+                formData.append('nom', attestation.nom);
+                formData.append('prenom', attestation.prenom);
+                formData.append('service', attestation.service);
+                formData.append('formation', attestation.formation_titre);
+                formData.append('mois', attestation.formation_mois);
+                formData.append('score', attestation.score + '%');
+                formData.append('signature', attestation.signature.substring(0, 500) + '...');
+
+                const response = await fetch('https://formspree.io/f/xqedabrq', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    console.log('✅ Attestation envoyée avec succès vers Formspree !');
+                } else {
+                    console.warn('⚠️ Erreur Formspree:', response.status);
+                }
+            } catch (error) {
+                console.error('❌ Erreur:', error);
+            }
+        }
+
+        // ============================================
+        // ADMIN - CRÉER FORMATION
+        // ============================================
+        function addQuestion() {
+            editorQuestions.push({
+                id: Date.now(),
+                question: '',
+                type: 'radio',
+                options: ['', ''],
+                correct_answers: []
+            });
+            renderQuestionEditor();
+        }
+
+        function removeQuestion(index) {
+            editorQuestions.splice(index, 1);
+            renderQuestionEditor();
+        }
+
+        function addOption(qIndex) {
+            editorQuestions[qIndex].options.push('');
+            renderQuestionEditor();
+        }
+
+        function removeOption(qIndex, optIndex) {
+            editorQuestions[qIndex].options.splice(optIndex, 1);
+            renderQuestionEditor();
+        }
+
+        function renderQuestionEditor() {
+            const container = document.getElementById('questionsEditor');
+            
+            if (editorQuestions.length === 0) {
+                container.innerHTML = '<div class="alert alert-info">Aucune question. Cliquez sur "Ajouter une question" pour commencer.</div>';
+                return;
+            }
+            
+            let html = '';
+            
+            editorQuestions.forEach((q, qIndex) => {
+                html += `
+                    <div class="question-editor">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <strong>Question ${qIndex + 1}</strong>
+                            <button class="btn btn-danger btn-small" onclick="removeQuestion(${qIndex})">🗑️ Supprimer</button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Texte de la question</label>
+                            <textarea rows="2" onchange="editorQuestions[${qIndex}].question = this.value" placeholder="Votre question...">${q.question}</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Type de question</label>
+                            <select onchange="editorQuestions[${qIndex}].type = this.value; renderQuestionEditor();">
+                                <option value="radio" ${q.type === 'radio' ? 'selected' : ''}>Choix unique (QCM)</option>
+                                <option value="checkbox" ${q.type === 'checkbox' ? 'selected' : ''}>Choix multiples</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Options de réponse</label>
+                            <div id="optionsContainer${qIndex}">
+                `;
+                
+                q.options.forEach((opt, optIndex) => {
+                    html += `
+                        <div class="option-editor">
+                            <input type="checkbox" 
+                                   ${q.correct_answers.includes(optIndex) ? 'checked' : ''}
+                                   onchange="
+                                       if (this.checked) {
+                                           if (!editorQuestions[${qIndex}].correct_answers.includes(${optIndex})) {
+                                               editorQuestions[${qIndex}].correct_answers.push(${optIndex});
+                                           }
+                                       } else {
+                                           editorQuestions[${qIndex}].correct_answers = editorQuestions[${qIndex}].correct_answers.filter(x => x !== ${optIndex});
+                                       }
+                                   "
+                                   title="Bonne réponse ?">
+                            <input type="text" 
+                                   value="${opt}" 
+                                   onchange="editorQuestions[${qIndex}].options[${optIndex}] = this.value"
+                                   placeholder="Texte de l'option">
+                            <button class="btn btn-danger btn-small" onclick="removeOption(${qIndex}, ${optIndex})">🗑️</button>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                            </div>
+                            <button class="btn btn-secondary btn-small" onclick="addOption(${qIndex})" style="margin-top: 10px;">
+                                ➕ Ajouter une option
+                            </button>
+                            <p style="font-size: 0.9em; color: #64748b; margin-top: 10px;">
+                                ℹ️ Cochez la case à gauche pour indiquer les bonnes réponses
+                            </p>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function saveFormation() {
+            const titre = document.getElementById('newFormationTitre').value.trim();
+            const mois = document.getElementById('newFormationMois').value.trim();
+            const pdf_url = document.getElementById('newFormationPdf').value.trim();
+            
+            if (!titre || !mois) {
+                alert('⚠️ Veuillez remplir le titre et le mois de la formation.');
+                return;
+            }
+            
+            if (editorQuestions.length === 0) {
+                alert('⚠️ Veuillez ajouter au moins une question.');
+                return;
+            }
+            
+            // Valider les questions
+            for (let i = 0; i < editorQuestions.length; i++) {
+                const q = editorQuestions[i];
+                if (!q.question.trim()) {
+                    alert(`⚠️ La question ${i + 1} est vide.`);
+                    return;
+                }
+                if (q.options.filter(o => o.trim()).length < 2) {
+                    alert(`⚠️ La question ${i + 1} doit avoir au moins 2 options.`);
+                    return;
+                }
+                if (q.correct_answers.length === 0) {
+                    alert(`⚠️ Veuillez indiquer au moins une bonne réponse pour la question ${i + 1}.`);
+                    return;
+                }
+            }
+            
+            const formation = {
+                id: 'f' + Date.now(),
+                titre: titre,
+                mois: mois,
+                is_current: false,
+                pdf_url: pdf_url,
+                questions: editorQuestions.map((q, index) => ({
+                    id: index + 1,
+                    question: q.question,
+                    type: q.type,
+                    options: q.options.filter(o => o.trim()),
+                    correct_answers: q.correct_answers
+                }))
+            };
+            
+            const formations = DB.getFormations();
+            formations.push(formation);
+            DB.saveFormations(formations);
+            
+            alert('✅ Formation créée avec succès !');
+            
+            // Réinitialiser le formulaire
+            document.getElementById('newFormationTitre').value = '';
+            document.getElementById('newFormationMois').value = '';
+            document.getElementById('newFormationPdf').value = '';
+            editorQuestions = [];
+            renderQuestionEditor();
+            
+            showAdminTab(null, 'list');
+        }
+
+        // ============================================
+        // ADMIN - GÉRER FORMATIONS
+        // ============================================
+        function loadAdminFormations() {
+            const formations = DB.getFormations();
+            const container = document.getElementById('adminFormationsList');
+            
+            if (formations.length === 0) {
+                container.innerHTML = '<div class="alert alert-warning">Aucune formation créée.</div>';
+                return;
+            }
+            
+            let html = '';
+            
+            formations.forEach(f => {
+                html += `
+                    <div class="formation-item">
+                        <div class="formation-item-header">
+                            <div>
+                                <h4>${f.titre}</h4>
+                                <p style="color: #64748b; margin-top: 5px;">
+                                    Mois: ${f.mois} | ${f.questions.length} questions
+                                </p>
+                            </div>
+                            <div class="formation-actions">
+                                ${f.is_current ? 
+                                    '<button class="btn btn-secondary btn-small" onclick="toggleFormationStatus(\'' + f.id + '\')">⏸️ Désactiver</button>' :
+                                    '<button class="btn btn-success btn-small" onclick="toggleFormationStatus(\'' + f.id + '\')">▶️ Activer</button>'
+                                }
+                                <button class="btn btn-danger btn-small" onclick="deleteFormation('${f.id}')">🗑️ Supprimer</button>
+                            </div>
+                        </div>
+                        ${f.is_current ? '<div class="alert alert-success" style="margin-top: 10px;">✅ Formation active (visible par les salariés)</div>' : ''}
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function toggleFormationStatus(formationId) {
+            const formations = DB.getFormations();
+            const formation = formations.find(f => f.id === formationId);
+            
+            if (formation) {
+                formation.is_current = !formation.is_current;
+                DB.saveFormations(formations);
+                loadAdminFormations();
+            }
+        }
+
+        function deleteFormation(formationId) {
+            if (!confirm('⚠️ Êtes-vous sûr de vouloir supprimer cette formation ?')) {
+                return;
+            }
+            
+            let formations = DB.getFormations();
+            formations = formations.filter(f => f.id !== formationId);
+            DB.saveFormations(formations);
+            loadAdminFormations();
+            alert('✅ Formation supprimée avec succès.');
+        }
+
+        // ============================================
+        // ADMIN - ATTESTATIONS
+        // ============================================
+        function loadAttestations() {
+            const attestations = DB.getAttestations();
+            const container = document.getElementById('attestationsList');
+            
+            document.getElementById('totalAttestations').textContent = attestations.length;
+            
+            if (attestations.length === 0) {
+                container.innerHTML = '<div class="alert alert-warning">Aucune attestation enregistrée.</div>';
+                return;
+            }
+            
+            let html = '';
+            
+            attestations.reverse().forEach(att => {
+                html += `
+                    <div class="attestation-item">
+                        <div class="attestation-header">
+                            <div>
+                                <strong style="font-size: 1.2em;">${att.prenom} ${att.nom}</strong>
+                                <p style="color: #64748b; margin-top: 5px;">
+                                    Service: ${att.service} | Formation: ${att.formation_titre}
+                                </p>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.5em; font-weight: bold; color: ${att.score >= 70 ? 'var(--success)' : att.score >= 50 ? 'var(--warning)' : 'var(--danger)'};">
+                                    ${att.score}%
+                                </div>
+                                <p style="color: #64748b; font-size: 0.9em;">${att.date}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <strong>Signature :</strong>
+                            <br>
+                            <img src="${att.signature}" alt="Signature" class="attestation-signature">
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function exportToExcel() {
+            const attestations = DB.getAttestations();
+            
+            if (attestations.length === 0) {
+                alert('Aucune attestation à exporter.');
+                return;
+            }
+            
+            let csv = 'Date,Nom,Prénom,Service,Formation,Score (%)\n';
+            
+            attestations.forEach(att => {
+                csv += `"${att.date}","${att.nom}","${att.prenom}","${att.service}","${att.formation_titre}",${att.score}\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `attestations_qse_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            alert('✅ Export réussi !');
+        }
+
+        // ============================================
+        // INITIALISATION
+        // ============================================
+        window.onload = function() {
+            DB.init();
+            console.log('✅ Site de formation QSE chargé');
+            console.log('📚 Formations disponibles:', DB.getFormations().length);
+            console.log('📧 Formspree activé');
+        };
+    </script>
+</body>
+</html>
